@@ -44,7 +44,6 @@ app.post('/', (req, res) => {
 app.get('/finish_auth', (req, res) => {
   if (!Shopify) return res.redirect('/');
   let query_params = req.query;
-  console.log(appConfig.shop);
   Shopify.exchange_temporary_token(query_params, function(err, data) {
     if (err) console.log(err);
     res.sendFile(`${__dirname}/auth_callback.html`);
