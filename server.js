@@ -46,11 +46,6 @@ app.get('/finish_auth', (req, res) => {
   if (!shop) return res.send(404);
   Shopify.exchange_temporary_token(query_params, function(err, data) {
     if (err) console.log(err);
-    var Shopify2 = new shopifyAPI({
-      shop: shop,
-      shopify_api_key: process.env.apiKey || '',
-      access_token: data.access_token,
-    });
     let products, orders, customers;
 
     Shopify.get('/admin/products.json', function(err, data, headers) {
