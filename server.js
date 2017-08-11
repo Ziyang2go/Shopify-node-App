@@ -10,11 +10,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const appConfig = {
-  shopify_api_key: '16d9a08b07c4c22911ae62de2f92eb80', // Your API key
-  shopify_shared_secret: '62ec0e4676e19794c7e855383597e7f7', // Your Shared Secret
+  shopify_api_key: process.env.apiKey || '',
+  shopify_shared_secret: process.env.apiSecret || '',
   shopify_scope: ['read_products', 'read_orders', 'read_customers'],
   redirect_uri: 'http://localhost:8080/finish_auth',
-  nonce: '', // you must provide a randomly selected value unique for each authorization request
+  nonce: '',
 };
 
 app.get('/', (req, res) => {
@@ -48,7 +48,7 @@ app.get('/finish_auth', (req, res) => {
     if (err) console.log(err);
     var Shopify2 = new shopifyAPI({
       shop: shop,
-      shopify_api_key: '16d9a08b07c4c22911ae62de2f92eb80', // Your API key
+      shopify_api_key: process.env.apiKey || '',
       access_token: data.access_token,
     });
     let products, orders, customers;
