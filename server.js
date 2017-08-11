@@ -42,16 +42,36 @@ app.post('/', (req, res) => {
 });
 
 app.get('/finish_auth', (req, res) => {
+  if (!Shopify) return res.redirect('/');
   let query_params = req.query;
-  if (!shop) return res.send(404);
+  console.log(appConfig.shop);
   Shopify.exchange_temporary_token(query_params, function(err, data) {
     if (err) console.log(err);
-    let products, orders, customers;
+    res.sendFile(`${__dirname}/auth_callback.html`);
+  });
+});
 
-    Shopify.get('/admin/products.json', function(err, data, headers) {
-      if (err) console.log(err);
-      res.json(data);
-    });
+app.get('/products', (req, res) => {
+  if (!Shopify) return res.redirect('/');
+  Shopify.get('/admin/products.json', function(err, data, headers) {
+    if (err) console.log(err);
+    res.json(data);
+  });
+});
+
+app.get('/orders', (req, res) => {
+  if (!Shopify) return res.redirect('/');
+  Shopify.get('/admin/orders.json', function(err, data, headers) {
+    if (err) console.log(err);
+    res.json(data);
+  });
+});
+
+app.get('/customers', (req, res) => {
+  if (!Shopify) return res.redirect('/');
+  Shopify.get('/admin/customers.json', function(err, data, headers) {
+    if (err) console.log(err);
+    res.json(data);
   });
 });
 
